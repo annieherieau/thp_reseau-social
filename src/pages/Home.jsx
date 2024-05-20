@@ -1,13 +1,13 @@
 // atoms
 import { useAtomValue } from "jotai";
-import { isLoggedInAtom } from "../app/atoms";
+import { authAtom } from "../app/atoms";
 
 // features
 import PostList from "../features/posts/PostsList";
 import Visitor from "../features/user/Visitor";
 
 export default function Home() {
-  const isLoggedIn = useAtomValue(isLoggedInAtom);
+  const isLoggedIn = useAtomValue(authAtom);
 
   return (
     <section>

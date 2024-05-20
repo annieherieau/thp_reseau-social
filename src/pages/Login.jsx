@@ -1,17 +1,14 @@
 import { useState, useEffect } from "react";
 import { Button, Form, FormGroup } from "react-bootstrap";
 import { buildRequest, handleResponse } from "../app/api";
-import { useSetAtom } from "jotai";
+import { useAtom } from "jotai";
 import { authAtom } from "../app/atoms";
 import { loadCookie } from "../app/cookies";
+import toHomePage from "../app/toHomePage";
 
 export default function Login() {
-  const setAuth = useSetAtom(authAtom);
-
+  const [auth, setAuth] = useAtom(authAtom);
   const [request, setRequest] = useState(undefined);
-  const [requestData, setRequestData] = useState(undefined);
-
-  // // si login redirection profil
 
   const handleLogin = (event) => {
     event.preventDefault();
@@ -36,10 +33,14 @@ export default function Login() {
     if (request) {
       fetch(request.url, request.options)
         .then((response) => response.json())
-        .then((response) => setRequestData(handleResponse("login", response)))
+        .then((response) => handleResponse("login", response))
         .catch((err) => console.error(err));
     }
-    setAuth(loadCookie());
+
+    if (loadCookie()) {
+      setAuth(loadCookie());
+      toHomePage();
+    }
   }, [request]);
 
   return (

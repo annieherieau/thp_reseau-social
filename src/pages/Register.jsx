@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import { Button, Form, FormGroup } from "react-bootstrap";
 import { buildRequest, handleResponse } from "../app/api";
 import { useAtomValue } from "jotai";
-import { isLoggedInAtom } from "../app/atoms";
+import { authAtom } from "../app/atoms";
 
 export default function Regiter() {
-  const isLoggedIn = useAtomValue(isLoggedInAtom);
+  const isLoggedIn = useAtomValue(authAtom);
 
   const [request, setRequest] = useState(undefined);
   const [requestData, setRequestData] = useState(undefined);

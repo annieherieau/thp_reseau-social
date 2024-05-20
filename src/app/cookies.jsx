@@ -1,5 +1,7 @@
 //https://www.npmjs.com/package/js-cookie
 import Cookies from "js-cookie";
+import toHomePage from "./toHomePage";
+
 export const cookie_name = import.meta.env.VITE_COOKIE_NAME;
 
 export function createCookie(token, username, userid) {
@@ -8,6 +10,7 @@ export function createCookie(token, username, userid) {
     JSON.stringify({ token: token, username: username, userid: userid }),
     { expires: 7 }
   );
+  toHomePage();
 }
 
 export function loadCookie() {

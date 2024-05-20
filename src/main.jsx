@@ -4,9 +4,11 @@ import App from "./app/App.jsx";
 import "./index.scss";
 import { BrowserRouter } from "react-router-dom";
 
+const basename = import.meta.env.VITE_BASENAME;
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter basename="thp_reseau-social">
+    <BrowserRouter basename={basename}>
         <App />
     </BrowserRouter>
   </React.StrictMode>

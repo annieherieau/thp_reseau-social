@@ -10,7 +10,6 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Profile from "../pages/Profile";
-import Author from "../pages/Author";
 
 
 function App() {
@@ -22,8 +21,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/author/:id" element={<Author />} />
+          <Route path="/profile" exact element={<Profile />} />
+          <Route path="/profile/:authorId" element={<Profile />} />
         </Routes>
       </main>
       <Footer />

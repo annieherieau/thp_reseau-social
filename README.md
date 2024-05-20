@@ -3,10 +3,10 @@
 App React minimaliste d'un mini réseau social type Twitter. Le global state est géré par Jotai.
 
 ## Fonctionnalités:
-- page d'acceuil
-- Un système d'authentification (Sign up, Log in, Log out)
-- Afficher la liste des messages (user authentifié)
-- tri des messages par date
+- [x] page d'accueil
+- [x] Un système d'authentification (Sign up, Log in, Log out)
+- [x] Afficher la liste des messages (user authentifié)
+- [x] tri des messages par date (décroisante)
 - Dashboard utilisateur: gestion du profil
 - CRUD des messages
 - liker / dé-liker les messages

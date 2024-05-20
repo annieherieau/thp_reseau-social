@@ -1,16 +1,23 @@
-import { Container, Nav, Navbar } from "react-bootstrap";
+import { Container, Nav,  Navbar } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { removeCookie } from "../app/cookies";
+import toHomePage from "../app/toHomePage";
+
 // atoms
-import { useAtomValue} from "jotai";
-import { authAtom, isLoggedInAtom } from "../app/atoms";
+import { useAtomValue } from "jotai";
+import { authAtom } from "../app/atoms";
+
 
 export default function Header() {
-  const isLoggedIn = useAtomValue(isLoggedInAtom);
-  const username = isLoggedIn ? useAtomValue(authAtom).username : null;
+  const isLoggedIn = useAtomValue(authAtom) ? true : false;
+  const username = useAtomValue(authAtom) ? useAtomValue(authAtom).username : null;
+  const logOut = () => {
+    removeCookie();
+    toHomePage()
+  } 
   return (
     <header>
-      <Navbar expand="lg" className="bg-primary" data-bs-theme="dark">
+      <Navbar expand="lg" className="bg-dark" data-bs-theme="dark">
         <Container>
           <NavLink className="navbar-brand" to="/">
             Logo
@@ -39,9 +46,9 @@ export default function Header() {
               )}
               {isLoggedIn && (
                 <Nav.Item>
-                  <NavLink to="/" onClick={removeCookie}>
+                  <Nav.Link onClick={()=> logOut()}>
                     Se déconnecter
-                  </NavLink>
+                  </Nav.Link>
                 </Nav.Item>
               )}
             </Nav>
