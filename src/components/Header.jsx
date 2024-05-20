@@ -1,10 +1,13 @@
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
-// import { useSelector } from "react-redux";
+import { removeCookie } from "../app/cookies";
+// atoms
+import { useAtomValue } from "jotai";
+import { authAtom, isLoggedInAtom } from "../app/atoms";
 
 export default function Header() {
-  // const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
-  const isLoggedIn = true;
+  const isLoggedIn = useAtomValue(isLoggedInAtom);
+  const username = isLoggedIn ? useAtomValue(authAtom).username : null;
 
   return (
     <header>
@@ -19,22 +22,29 @@ export default function Header() {
               <Nav.Item>
                 <NavLink to="/">Accueil</NavLink>
               </Nav.Item>
-      {!isLoggedIn &&
-              <Nav.Item>
-                <NavLink to="/login">Connexion</NavLink>
-              </Nav.Item>}
-              {!isLoggedIn && <Nav.Item>
-                <NavLink to="/register">Inscription</NavLink>
-              </Nav.Item>}
+              {!isLoggedIn && (
+                <Nav.Item>
+                  <NavLink to="/login">Connexion</NavLink>
+                </Nav.Item>
+              )}
+              {!isLoggedIn && (
+                <Nav.Item>
+                  <NavLink to="/register">Inscription</NavLink>
+                </Nav.Item>
+              )}
 
-              {isLoggedIn &&
-              <Nav.Item>
-                <NavLink to="/profile">Profile</NavLink>
-              </Nav.Item> }
-              {isLoggedIn &&
-               <Nav.Item>
-               <NavLink to="/">Se déconnecter</NavLink>
-             </Nav.Item> }
+              {isLoggedIn && (
+                <Nav.Item>
+                  <NavLink to="/profile">Profile {username}</NavLink>
+                </Nav.Item>
+              )}
+              {isLoggedIn && (
+                <Nav.Item>
+                  <NavLink to="/" onClick={removeCookie}>
+                    Se déconnecter
+                  </NavLink>
+                </Nav.Item>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
