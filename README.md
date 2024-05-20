@@ -1,5 +1,32 @@
 # React + Vite
 
+App React minimaliste d'un mini réseau social type Twitter. Le global state est géré par Jotai.
+
+## Fonctionnalités:
+- Afficher la liste des messages (accès public)
+- Un système d'authentification (Sign up, Log in, Log out)
+- tri des messages par date
+- Dashboard utilisateur: gestion du profil
+- CRUD des messages
+- liker / dé-liker les messages
+- Consulter les profils publics des autres utilisateurs (lien cliquable dans le post)
+
+## Installation
+Clone repository
+
+Dependencies
+- Vite
+- React
+- bootstrap
+- Redux
+- Js-cookie
+
+```bash
+pnpm i
+```
+in case pnpm is not already install : ``npm i -g pnpm``
+---
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
