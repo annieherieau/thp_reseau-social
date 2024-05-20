@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { buildRequest, handleResponse } from "../app/api";
 
 export default function Profile() {
+  
   const isLoggedIn = useAtomValue(authAtom);
   if (!isLoggedIn) {
     toHomePage();
