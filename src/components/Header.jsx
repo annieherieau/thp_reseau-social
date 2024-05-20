@@ -2,13 +2,12 @@ import { Container, Nav, Navbar } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { removeCookie } from "../app/cookies";
 // atoms
-import { useAtomValue } from "jotai";
+import { useAtomValue} from "jotai";
 import { authAtom, isLoggedInAtom } from "../app/atoms";
 
 export default function Header() {
   const isLoggedIn = useAtomValue(isLoggedInAtom);
   const username = isLoggedIn ? useAtomValue(authAtom).username : null;
-
   return (
     <header>
       <Navbar expand="lg" className="bg-primary" data-bs-theme="dark">

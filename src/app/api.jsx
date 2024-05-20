@@ -1,56 +1,45 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { createCookie } from "./cookies";
+import { createCookie} from "./cookies";
 
 const api_url = import.meta.env.VITE_STRAPI_URL;
 
 // Requestes, methodes et liens correspondants
 const endpoints = {
   register: {
-    method: "GET",
+    method: "POST",
     url: api_url + "auth/local/register",
-    body: true,
   },
   login: {
     method: "POST",
     url: api_url + "auth/local",
-    body: true,
   },
-  posts: { method: "GET", url: api_url + "posts", body: false },
-  create_post: { method: "POST", url: api_url + "posts", body: true },
-  read_post: { method: "GET", url: api_url + `posts/{:id}`, body: false },
-  update_post: { method: "PUT", url: api_url + `posts/{:id}`, body: true },
+  posts: { method: "GET", url: api_url + "posts" },
+  create_post: { method: "POST", url: api_url + "posts" },
+  read_post: { method: "GET", url: api_url + `posts/{:id}` },
+  update_post: { method: "PUT", url: api_url + `posts/{:id}` },
   delete_post: {
     method: "DELETE",
     url: api_url + `posts/{:id}`,
-    body: false,
   },
   populate_author: {
     method: "GET",
     url: api_url + `posts/{:id}?populate=author`,
-
-    body: false,
   },
   posts_author: {
     method: "GET",
     url: api_url + `posts/?filters[author][id][$eq]={:id}`,
-
-    body: false,
   },
   populate_users_likes: {
     method: "GET",
     url: api_url + `posts/{:id}?populate=users_likes`,
-
-    body: false,
   },
-  users: { method: "GET", url: api_url + "users", body: false },
-  read_user: { method: "GET", url: api_url + `users/{:id}`, body: false },
-  read_user_me: { method: "GET", url: api_url + "users/me", body: false },
+  users: { method: "GET", url: api_url + "users" },
+  read_user: { method: "GET", url: api_url + `users/{:id}` },
+  read_user_me: { method: "GET", url: api_url + "users/me" },
   update_user_me: {
     method: "PUT",
     url: api_url + "users-permissions/users/me",
-
-    body: true,
   },
 };
 
@@ -99,7 +88,8 @@ export default function sendRequest(
 // gestion de la réponse et création du cookie
 export function handleResponse(request, response) {
   if ((request === "login" || request === "register") && response.jwt) {
-    createCookie(response.jwt, response.user.username);
+    // création du cookie
+    createCookie(response.jwt, response.user.username, response.user.id);
   }
   return response;
 }

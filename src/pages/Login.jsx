@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { Button, Form, FormGroup } from "react-bootstrap";
 import { buildRequest, handleResponse } from "../app/api";
-import { useAtomValue } from "jotai";
-import { isLoggedInAtom } from "../app/atoms";
+import { useSetAtom } from "jotai";
+import { authAtom } from "../app/atoms";
+import { loadCookie } from "../app/cookies";
 
 export default function Login() {
-  const isLoggedIn = useAtomValue(isLoggedInAtom);
-  
+  const setAuth = useSetAtom(authAtom);
+
   const [request, setRequest] = useState(undefined);
   const [requestData, setRequestData] = useState(undefined);
 
@@ -38,6 +39,7 @@ export default function Login() {
         .then((response) => setRequestData(handleResponse("login", response)))
         .catch((err) => console.error(err));
     }
+    setAuth(loadCookie());
   }, [request]);
 
   return (

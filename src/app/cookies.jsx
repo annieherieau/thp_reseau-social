@@ -2,10 +2,10 @@
 import Cookies from "js-cookie";
 export const cookie_name = import.meta.env.VITE_COOKIE_NAME;
 
-export function createCookie(token, username) {
+export function createCookie(token, username, userid) {
   Cookies.set(
     cookie_name,
-    JSON.stringify({ token: token, username: username }),
+    JSON.stringify({ token: token, username: username, userid: userid }),
     { expires: 7 }
   );
 }

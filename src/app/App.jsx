@@ -12,13 +12,8 @@ import Register from "../pages/Register";
 import Profile from "../pages/Profile";
 import Author from "../pages/Author";
 
-// Atoms
-import { authAtom, isLoggedInAtom } from "./atoms";
-import { useAtomValue } from "jotai";
 
 function App() {
-  const auth = useAtomValue(authAtom);
-  const isLoggedIn = useAtomValue(isLoggedInAtom);
   return (
     <>
       <Header />
@@ -32,7 +27,7 @@ function App() {
         </Routes>
       </main>
       <Footer />
-    </>
+      </>
   );
 }
 
