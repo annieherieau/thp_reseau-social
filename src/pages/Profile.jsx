@@ -6,10 +6,10 @@ import { authAtom } from "../app/atoms";
 import PostList from "../features/posts/PostsList";
 import UserProfile from "../features/user/UserProfile";
 import { useParams } from "react-router-dom";
-import sendRequest, { buildRequest, handleResponse } from "../app/api";
 import { useState } from "react";
 import toHomePage from "../app/toHomePage";
 import { useEffect } from "react";
+import { buildRequest, handleResponse } from "../app/api";
 
 export default function Profile() {
   const isLoggedIn = useAtomValue(authAtom);
@@ -21,19 +21,17 @@ export default function Profile() {
   const [authorId, setAuthorId] = useState(parseInt(useParams().authorId));
   const [id, setId] = useState(authorId ? authorId : isLoggedIn.userid);
 
-  useEffect(() => {}, [window.location]);
   // requête API
   const requestType = authorId ? "read_user" : "read_user_me";
   // créer la requête au changement de authorid
   useEffect(() => {
-    setId(authorId ? authorId : isLoggedIn.userid);
     setRequest(
       buildRequest(requestType, {
         id: id,
         token: isLoggedIn.token,
       })
     );
-  }, [useParams()]);
+  }, [authorId]);
 
   // // envoyer la requête
   useEffect(() => {
@@ -49,15 +47,14 @@ export default function Profile() {
   if (response && response.error) {
     return <p className="text-danger">{response.error.message}</p>;
   }
-
   if (isLoggedIn && response) {
     return (
       <section>
         <h1>Utilisateur</h1>
         <h2>informations</h2>
-        <UserProfile />
+        <UserProfile user={response} />
         <h2>Posts</h2>
-        <PostList authorId={id} />
+        <PostList userId={id} />
       </section>
     );
   }

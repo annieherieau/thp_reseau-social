@@ -3,6 +3,7 @@ import { Button, Form, FormGroup } from "react-bootstrap";
 import { buildRequest, handleResponse } from "../app/api";
 import { useAtomValue } from "jotai";
 import { authAtom } from "../app/atoms";
+import UserForm from "../features/user/UserForm";
 
 export default function Regiter() {
   const isLoggedIn = useAtomValue(authAtom);
@@ -42,21 +43,7 @@ export default function Regiter() {
   return (
     <section>
       <h1>Inscription</h1>
-      <Form className="form-login" onSubmit={handleRegister}>
-        <FormGroup className="form-group">
-          <Form.Label>Identifiant</Form.Label>
-          <Form.Control type="text" required name="username" />
-        </FormGroup>
-        <FormGroup className="form-group">
-          <Form.Label>Email</Form.Label>
-          <Form.Control type="email" required name="email" />
-        </FormGroup>
-        <FormGroup className="form-group">
-          <Form.Label>Mot de passe</Form.Label>
-          <Form.Control type="password" required name="password" />
-        </FormGroup>
-        <Button type="submit">Soumettre</Button>
-      </Form>
+      <UserForm register={true} onSubmit={handleRegister} />
     </section>
   );
 }

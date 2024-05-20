@@ -6,13 +6,13 @@ import DisplayPost from "./DisplayPost";
 import { useAtomValue } from "jotai";
 import { authAtom } from "../../app/atoms";
 
-export default function PostList({ authorId }) {
+export default function PostList({ userId }) {
   const isLoggedIn = useAtomValue(authAtom);
 
   // requete API
-  const requestType = authorId ? "posts_author" : "posts";
+  const requestType = userId ? "posts_author" : "posts";
   const response = sendRequest(requestType, {
-    id: authorId,
+    id: userId,
     token: isLoggedIn.token,
   });
 
