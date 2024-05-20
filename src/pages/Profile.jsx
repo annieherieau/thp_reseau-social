@@ -6,32 +6,49 @@ import { authAtom } from "../app/atoms";
 import PostList from "../features/posts/PostsList";
 import UserProfile from "../features/user/UserProfile";
 import { useParams } from "react-router-dom";
-import sendRequest from "../app/api";
+import sendRequest, { buildRequest, handleResponse } from "../app/api";
 import { useState } from "react";
 import toHomePage from "../app/toHomePage";
+import { useEffect } from "react";
 
 export default function Profile() {
   const isLoggedIn = useAtomValue(authAtom);
   if (!isLoggedIn) {
     toHomePage();
   }
+  const [request, setRequest] = useState(undefined);
+  const [response, setResponse] = useState(undefined);
   const [authorId, setAuthorId] = useState(parseInt(useParams().authorId));
-  const id = authorId ? authorId : isLoggedIn.userid;
+  const [id, setId] = useState(authorId ? authorId : isLoggedIn.userid);
 
+  useEffect(() => {}, [window.location]);
   // requête API
   const requestType = authorId ? "read_user" : "read_user_me";
-  console.log(requestType);
-  const response = sendRequest(requestType, {
-    id: id,
-    token: isLoggedIn.token,
-  });
+  // créer la requête au changement de authorid
+  useEffect(() => {
+    setId(authorId ? authorId : isLoggedIn.userid);
+    setRequest(
+      buildRequest(requestType, {
+        id: id,
+        token: isLoggedIn.token,
+      })
+    );
+  }, [useParams()]);
+
+  // // envoyer la requête
+  useEffect(() => {
+    if (request) {
+      fetch(request.url, request.options)
+        .then((response) => response.json())
+        .then((response) => setResponse(handleResponse(requestType, response)))
+        .catch((err) => console.error(err));
+    }
+  }, [request]);
 
   // afichage Erreurs
   if (response && response.error) {
     return <p className="text-danger">{response.error.message}</p>;
   }
-
-  console.log(response);
 
   if (isLoggedIn && response) {
     return (

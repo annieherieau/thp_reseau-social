@@ -9,8 +9,7 @@ import { authAtom } from "../app/atoms";
 
 
 export default function Header() {
-  const isLoggedIn = useAtomValue(authAtom) ? true : false;
-  const username = useAtomValue(authAtom) ? useAtomValue(authAtom).username : null;
+  const isLoggedIn = useAtomValue(authAtom);
   const logOut = () => {
     removeCookie();
     toHomePage()
@@ -26,22 +25,22 @@ export default function Header() {
           <Navbar.Collapse id="app-navbar">
             <Nav>
               <Nav.Item>
-                <NavLink to="/">Accueil</NavLink>
+                <NavLink className='nav-link' to="/">Accueil</NavLink>
               </Nav.Item>
               {!isLoggedIn && (
                 <Nav.Item>
-                  <NavLink to="/login">Connexion</NavLink>
+                  <NavLink className='nav-link' to="/login">Connexion</NavLink>
                 </Nav.Item>
               )}
               {!isLoggedIn && (
                 <Nav.Item>
-                  <NavLink to="/register">Inscription</NavLink>
+                  <NavLink className='nav-link' to="/register">Inscription</NavLink>
                 </Nav.Item>
               )}
 
               {isLoggedIn && (
                 <Nav.Item>
-                  <NavLink to="/profile">Profile {username}</NavLink>
+                  <NavLink className='nav-link' to="/profile">Profile {isLoggedIn.username}</NavLink>
                 </Nav.Item>
               )}
               {isLoggedIn && (
