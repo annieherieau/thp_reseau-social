@@ -1,53 +1,57 @@
 // atoms
-import { useAtomValue } from "jotai";
-import { authAtom } from "../app/atoms";
+import { useAtom, useAtomValue } from "jotai";
+import { authAtom, authorAtom, requestAtom, responseAtom } from "../app/atoms";
 
 // feature components
 import PostList from "../features/posts/PostsList";
 import UserProfile from "../features/user/UserProfile";
-import { useParams } from "react-router-dom";
 import { useState } from "react";
 import toHomePage from "../app/toHomePage";
 import { useEffect } from "react";
-import { buildRequest, handleResponse } from "../app/api";
+import { buildRequest } from "../app/api";
 
 export default function Profile() {
-  
   const isLoggedIn = useAtomValue(authAtom);
+  // redirection en page d'acceuil
   if (!isLoggedIn) {
     toHomePage();
   }
-  const [request, setRequest] = useState(undefined);
-  const [response, setResponse] = useState(undefined);
-  const [authorId, setAuthorId] = useState(parseInt(useParams().authorId));
-  const [id, setId] = useState(authorId ? authorId : isLoggedIn.userid);
 
-  // requête API
-  const requestType = authorId ? "read_user" : "read_user_me";
-  // créer la requête au changement de authorid
+  const [authorId, setAuthorId] = useAtom(authorAtom);
+  setAuthorId(parseInt(window.location.href.split("/").pop()));
+  const [id, setId] = useState(getAuthorId(authorId, isLoggedIn.userid));
+
+  const [requestType, setRequestType] = useState(getResquestType(authorId));
+
+  const [request, setRequest] = useAtom(requestAtom);
+  const [response, setResponse] = useAtom(responseAtom);
+
+  // au changement de author => set: id et resquestType
   useEffect(() => {
-    setRequest(
-      buildRequest(requestType, {
-        id: id,
-        token: isLoggedIn.token,
-      })
-    );
+    setId(getAuthorId(authorId, isLoggedIn.userid));
+    setRequestType(getResquestType(authorId));
   }, [authorId]);
+
+  // au changement de resquestType => set: request
+  useEffect(() => {
+    setRequest(buildRequest(requestType, { id: id, token: isLoggedIn.token}));
+  }, [requestType]);
 
   // // envoyer la requête
   useEffect(() => {
     if (request) {
       fetch(request.url, request.options)
-        .then((response) => response.json())
-        .then((response) => setResponse(handleResponse(requestType, response)))
+        .then((resp) => resp.json())
+        .then((resp) => setResponse(resp))
         .catch((err) => console.error(err));
     }
   }, [request]);
 
-  // afichage Erreurs
+  // affichage Erreurs
   if (response && response.error) {
     return <p className="text-danger">{response.error.message}</p>;
   }
+
   if (isLoggedIn && response) {
     return (
       <section>
@@ -59,4 +63,11 @@ export default function Profile() {
       </section>
     );
   }
+}
+
+function getAuthorId(id, loggedId) {
+  return id ? id : loggedId;
+}
+function getResquestType(author_id) {
+  return author_id ? "read_user" : "read_user_me";
 }

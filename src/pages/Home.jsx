@@ -46,6 +46,7 @@ export default function Home() {
     }
   }, [request]);
 
+  
   return (
     <section>
       <h1>Mini-Twitter</h1>

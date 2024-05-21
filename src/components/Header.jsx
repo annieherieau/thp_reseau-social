@@ -4,16 +4,19 @@ import { removeCookie } from "../app/cookies";
 import toHomePage from "../app/toHomePage";
 
 // atoms
-import { useAtomValue } from "jotai";
-import { authAtom } from "../app/atoms";
+import { useAtomValue, useSetAtom } from "jotai";
+import { authAtom, authorAtom } from "../app/atoms";
 
 
 export default function Header() {
   const isLoggedIn = useAtomValue(authAtom);
+  const setAuthorId = useSetAtom(authorAtom)
   const logOut = () => {
     removeCookie();
     toHomePage()
   } 
+
+
   return (
     <header>
       <Navbar expand="lg" className="bg-dark" data-bs-theme="dark">
@@ -40,7 +43,7 @@ export default function Header() {
 
               {isLoggedIn && (
                 <Nav.Item>
-                  <NavLink className='nav-link' to="/profile">Profile {isLoggedIn.username}</NavLink>
+                  <NavLink className='nav-link' to="/profile" onClick={() => setAuthorId(undefined)}>Profile {isLoggedIn.username}</NavLink>
                 </Nav.Item>
               )}
               {isLoggedIn && (

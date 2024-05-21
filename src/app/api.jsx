@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import { createCookie} from "./cookies";
+import { authAtom } from "./atoms";
 
 const api_url = import.meta.env.VITE_STRAPI_URL;
 
@@ -38,7 +39,7 @@ const endpoints = {
 // création de la requête: options et url
 export function buildRequest(
   request = "posts",
-  data = { id: null, body: null, token: null }
+  data = { id: null, body: null, token: useAtomValue(authAtom).token }
 ) {
   const { id, body, token } = data;
   const { method, url } = endpoints[request];

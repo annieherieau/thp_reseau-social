@@ -13,6 +13,12 @@ export function createCookie(token, username, userid) {
   toHomePage();
 }
 
+export function updateCookie(username) {
+  
+  const data = { ...loadCookie(), username: username };
+  Cookies.set(cookie_name, JSON.stringify(data), { expires: 7 });
+}
+
 export function loadCookie() {
   return Cookies.get(cookie_name) ? JSON.parse(Cookies.get(cookie_name)) : null;
 }
