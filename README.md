@@ -7,10 +7,11 @@ App React minimaliste d'un mini réseau social type Twitter. Le global state est
 - [x] Un système d'authentification (Sign up, Log in, Log out)
 - [x] Afficher la liste des messages (user authentifié)
 - [x] tri des messages par date (décroisante)
-- Dashboard utilisateur: gestion du profil
-- CRUD des messages
+- [x] Dashboard utilisateur: gestion du profil
+- [x] CRUD des messages
+- [x] Consulter les profils publics des autres utilisateurs (lien cliquable dans le post)
 - liker / dé-liker les messages
-- Consulter les profils publics des autres utilisateurs (lien cliquable dans le post)
+
 
 ## Installation
 Clone repository

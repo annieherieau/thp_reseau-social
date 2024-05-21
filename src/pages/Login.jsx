@@ -46,7 +46,7 @@ export default function Login() {
   return (
     <section>
       <h1>Connexion</h1>
-      <Form className="form-login" onSubmit={handleLogin}>
+      <Form className="login-form" onSubmit={handleLogin}>
         <FormGroup className="form-group">
           <Form.Label>Identifiant</Form.Label>
           <Form.Control type="text" required name="identifier" />

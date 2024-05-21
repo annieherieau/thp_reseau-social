@@ -14,25 +14,17 @@ const endpoints = {
     method: "POST",
     url: api_url + "auth/local",
   },
-  posts: { method: "GET", url: api_url + "posts" },
+  posts: { method: "GET", url: api_url + "posts/?populate=*&sort=publishedAt:desc" },
   create_post: { method: "POST", url: api_url + "posts" },
-  read_post: { method: "GET", url: api_url + `posts/{:id}` },
-  update_post: { method: "PUT", url: api_url + `posts/{:id}` },
+  read_post: { method: "GET", url: api_url + `posts/{:id}?populate=*` },
+  update_post: { method: "PUT", url: api_url + `posts/{:id}?populate=*` },
   delete_post: {
     method: "DELETE",
     url: api_url + `posts/{:id}`,
   },
-  populate_author: {
-    method: "GET",
-    url: api_url + `posts/{:id}?populate=author`,
-  },
   posts_author: {
     method: "GET",
-    url: api_url + `posts/?filters[author][id][$eq]={:id}`,
-  },
-  populate_users_likes: {
-    method: "GET",
-    url: api_url + `posts/{:id}?populate=users_likes`,
+    url: api_url + `posts/?filters[author][id][$eq]={:id}&populate=*&sort=publishedAt:desc`,
   },
   users: { method: "GET", url: api_url + "users" },
   read_user: { method: "GET", url: api_url + `users/{:id}` },
@@ -69,7 +61,7 @@ export function buildRequest(
 }
 
 // Envoi de la requete
-export default function sendRequest(
+export function sendRequest(
   request = "posts",
   data = { id: null, body: null, token: null }
 ) {

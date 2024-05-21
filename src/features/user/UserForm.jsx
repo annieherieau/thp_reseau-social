@@ -1,8 +1,7 @@
-
 import { Button, Form, FormGroup } from "react-bootstrap";
 
 export default function UserForm(props) {
-  const { register, user, onSubmit, onChange} = props;
+  const { register, user, onSubmit, onChange } = props;
   return (
     <Form
       className={register ? "register-form" : "profile-form"}
@@ -19,16 +18,17 @@ export default function UserForm(props) {
         />
       </FormGroup>
       {register && (
-      <FormGroup className="form-group">
-        <Form.Label>Email</Form.Label>
-        <Form.Control
-          type="email"
-          required
-          name="email"
-          defaultValue={user ? user.email : ""}
-          onChange={onChange}
-        />
-      </FormGroup>)}
+        <FormGroup className="form-group">
+          <Form.Label>Email</Form.Label>
+          <Form.Control
+            type="email"
+            required
+            name="email"
+            defaultValue={user ? user.email : ""}
+            onChange={onChange}
+          />
+        </FormGroup>
+      )}
       {register && (
         <FormGroup className="form-group">
           <Form.Label>Mot de passe</Form.Label>
@@ -47,11 +47,11 @@ export default function UserForm(props) {
           />
         </FormGroup>
       )}
-
-      <Button type="submit">
-        Soumettre
-      </Button>
-     
+      <FormGroup className="right-btn">
+        <Button type="submit">
+          Soumettre
+        </Button>
+      </FormGroup>
     </Form>
   );
 }

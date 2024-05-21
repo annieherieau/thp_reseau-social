@@ -16,7 +16,9 @@ main {
 footer {
   @extend .mt-auto, .text-center;
 }
-form {
+.profile-form,
+.register-form,
+.login-form {
   max-width: 30rem;
   @extend .bg-light, .border, .p-4;
   border-radius: $border-radius;
@@ -26,11 +28,18 @@ form {
   max-width: 50rem;
 }
 
-button {
-  @extend .w-100;
-}
 .form-group {
   @extend .mb-3;
+}
+.right-btn{
+  display: flex;
+}
+.right-btn button{
+  @extend .ms-auto;
+}
+.post-form textarea {
+  font-size: $font-size-sm;
+  font-family: $font-family-serif;
 }
 .navbar-nav {
   @extend .gap-3;
