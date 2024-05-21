@@ -1,6 +1,6 @@
-@import "node_modules/bootswatch/dist/litera/variables";
+@import "node_modules/bootswatch/dist/cerulean/variables";
 @import "node_modules/bootstrap/scss/bootstrap";
-@import "node_modules/bootswatch/dist/litera/bootswatch";
+@import "node_modules/bootswatch/dist/cerulean/bootswatch";
 
 $border-radius: 1.078em;
 
@@ -39,7 +39,6 @@ footer {
 }
 .post-form textarea {
   font-size: $font-size-sm;
-  font-family: $font-family-serif;
 }
 .navbar-nav {
   @extend .gap-3;
