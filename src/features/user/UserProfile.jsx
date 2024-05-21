@@ -1,4 +1,3 @@
-// atoms
 import { useAtom } from "jotai";
 import { authAtom } from "../../app/atoms";
 import UserForm from "./UserForm";
@@ -36,7 +35,7 @@ export default function UserProfile({ user }) {
       })
     );
   };
-  // // envoyer la requête
+  // // envoyer la requête User
   useEffect(() => {
     if (request) {
       fetch(request.url, request.options)

@@ -1,6 +1,6 @@
 // atoms
 import { useAtom, useAtomValue } from "jotai";
-import { authAtom, authorAtom } from "../app/atoms";
+import { authAtom, authorAtom, requestAtom, responseAtom } from "../app/atoms";
 
 // feature components
 import PostList from "../features/posts/PostsList";
@@ -17,15 +17,14 @@ export default function Profile() {
     toHomePage();
   }
 
-  // déterminer l'id de l'author (userme ou userX)
-  const [authorId, setAuthorId] = useAtom(authorAtom); 
+  const [authorId, setAuthorId] = useAtom(authorAtom);
   setAuthorId(parseInt(window.location.href.split("/").pop()));
   const [id, setId] = useState(getAuthorId(authorId, isLoggedIn.userid));
 
-  // option de la requete (userme ou userX)
   const [requestType, setRequestType] = useState(getResquestType(authorId));
-  const [request, setRequest] = useState({});
-  const [response, setResponse] = useState({});
+
+  const [request, setRequest] = useAtom(requestAtom);
+  const [response, setResponse] = useAtom(responseAtom);
 
   // au changement de author => set: id et resquestType
   useEffect(() => {
@@ -38,7 +37,7 @@ export default function Profile() {
     setRequest(buildRequest(requestType, { id: id, token: isLoggedIn.token}));
   }, [requestType]);
 
-  // FETCH la requête => set: response
+  // // envoyer la requête
   useEffect(() => {
     if (request) {
       fetch(request.url, request.options)
@@ -53,7 +52,6 @@ export default function Profile() {
     return <p className="text-danger">{response.error.message}</p>;
   }
 
-  // AFFICHAGE DE LA PAGE
   if (isLoggedIn && response) {
     return (
       <section>

@@ -1,4 +1,4 @@
-import { ListGroup} from "react-bootstrap";
+import { ListGroup } from "react-bootstrap";
 import { sendRequest, buildRequest, handleResponse } from "../../app/api";
 import DisplayPost from "./DisplayPost";
 
@@ -10,7 +10,8 @@ import { useEffect } from "react";
 
 export default function PostList({ userId }) {
   const isLoggedIn = useAtomValue(authAtom);
-
+  const [id, setId] = useState(userId);
+  // const [requestType, setRequestType] = useState()
   // requete API
   const requestType = userId ? "posts_author" : "posts";
   const [deleteRequest, setDeleteRequest] = useState(undefined);
@@ -31,7 +32,7 @@ export default function PostList({ userId }) {
       buildRequest("delete_post", {
         id: event.target.id,
         token: isLoggedIn.token,
-        body: null
+        body: null,
       })
     );
   }
@@ -44,7 +45,7 @@ export default function PostList({ userId }) {
         .then((response) =>
           setDeleteRequest(handleResponse("delete_post", response))
         )
-        .catch((err) => console.error(err))
+        .catch((err) => console.error(err));
     }
   }, [deleteRequest]);
 
