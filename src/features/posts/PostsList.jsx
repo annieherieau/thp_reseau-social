@@ -28,26 +28,22 @@ export default function PostList({ userId }) {
   // DELETE POST
   function deletePost(event) {
     // créer la requête UPDATE DU POST
-    setDeleteRequest(
+    const request = 
       buildRequest("delete_post", {
         id: event.target.id,
         token: isLoggedIn.token,
         body: null,
       })
-    );
-  }
-
-  // // envoyer la requête UPDATE
-  useEffect(() => {
-    if (deleteRequest) {
-      fetch(deleteRequest.url, deleteRequest.options)
+    if (request) {
+      fetch(request.url, request.options)
         .then((response) => response.json())
         .then((response) =>
           setDeleteRequest(handleResponse("delete_post", response))
         )
         .catch((err) => console.error(err));
     }
-  }, [deleteRequest]);
+    location.reload();
+  }
 
   // affichage des Posts
   return (

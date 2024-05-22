@@ -1,6 +1,6 @@
 // atoms
-import {useAtomValue } from "jotai";
-import { authAtom} from "../app/atoms";
+import { useAtomValue } from "jotai";
+import { authAtom } from "../app/atoms";
 
 // features
 import PostList from "../features/posts/PostsList";
@@ -28,34 +28,30 @@ export default function Home() {
     thisData.author = isLoggedIn.userid;
     console.log(thisData);
     // créer la requête CREATE DU POST
-    setRequest(
-      buildRequest(requestType, {
-        body: { data: thisData },
-        token: isLoggedIn.token,
-      })
-    );
-  };
-
-  // // envoyer la requête CREATE
-  useEffect(() => {
+    const request = buildRequest(requestType, {
+      body: { data: thisData },
+      token: isLoggedIn.token,
+    });
     if (request) {
       fetch(request.url, request.options)
         .then((response) => response.json())
         .then((response) => handleResponse(requestType, response))
         .catch((err) => console.error(err));
     }
-  }, [request]);
+    location.reload();
+  };
 
-  
   return (
     <section>
       <h1>Mini-Twitter</h1>
-      {isLoggedIn && (<PostForm
-        postText=""
-        targetId={requestType}
-        // onChange={() => setShowAlert(false)}
-        onSubmit={handleSubmit}
-      />)}
+      {isLoggedIn && (
+        <PostForm
+          postText=""
+          targetId={requestType}
+          // onChange={() => setShowAlert(false)}
+          onSubmit={handleSubmit}
+        />
+      )}
       {isLoggedIn ? <PostList /> : <Visitor />}
     </section>
   );
