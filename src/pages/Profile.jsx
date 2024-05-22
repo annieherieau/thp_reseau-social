@@ -16,11 +16,11 @@ export default function Profile() {
   if (!isLoggedIn) {
     toHomePage();
   }
-
-  // déterminer l'id de l'author (userme ou userX)
-  const [authorId, setAuthorId] = useAtom(authorAtom); 
-  setAuthorId(parseInt(window.location.href.split("/").pop()));
-  const [id, setId] = useState(getAuthorId(authorId, isLoggedIn.userid));
+   // déterminer l'id de l'author (userme ou userX)
+   const [authorId, setAuthorId] = useAtom(authorAtom); 
+   setAuthorId(parseInt(window.location.href.split("/").pop()));
+   const [id, setId] = useState(getAuthorId(authorId, isLoggedIn.userid));
+ 
 
   // option de la requete (userme ou userX)
   const [requestType, setRequestType] = useState(getResquestType(authorId));

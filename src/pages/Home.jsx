@@ -1,20 +1,19 @@
 // atoms
-import {useAtomValue } from "jotai";
-import { authAtom} from "../app/atoms";
+import { useAtomValue } from "jotai";
+import { authAtom } from "../app/atoms";
 
 // features
 import PostList from "../features/posts/PostsList";
 import Visitor from "../features/user/Visitor";
 import PostForm from "../features/posts/PostForm";
 import { useState } from "react";
-import { buildRequest, handleResponse } from "../app/api";
-import { useEffect } from "react";
+import { buildRequest } from "../app/api";
+import toHomePage from "../app/toHomePage";
 
 export default function Home() {
   const isLoggedIn = useAtomValue(authAtom);
   const [newPost, setNewPost] = useState(undefined);
   const requestType = "create_post";
-  const [request, setRequest] = useState(undefined);
 
   // soumission du formulaire
   const handleSubmit = (event) => {
@@ -28,35 +27,49 @@ export default function Home() {
     thisData.author = isLoggedIn.userid;
     console.log(thisData);
     // créer la requête CREATE DU POST
-    setRequest(
-      buildRequest(requestType, {
-        body: { data: thisData },
-        token: isLoggedIn.token,
-      })
-    );
-  };
-
-  // // envoyer la requête CREATE
-  useEffect(() => {
+    const request = buildRequest(requestType, {
+      body: { data: thisData },
+      token: isLoggedIn.token,
+    });
     if (request) {
       fetch(request.url, request.options)
         .then((response) => response.json())
-        .then((response) => handleResponse(requestType, response))
+        .then((response) => setNewPost(response))
         .catch((err) => console.error(err));
     }
-  }, [request]);
+    location.reload();
+  };
 
-  
+
+  // DELETE POST
+  function deletePost(event) {
+    // créer la requête UPDATE DU POST
+    const request = buildRequest("delete_post", {
+      id: event.target.id,
+      token: isLoggedIn.token,
+      body: null,
+    });
+    if (request) {
+      fetch(request.url, request.options)
+        .then((response) => response.json())
+        .then((response) => setDeleteRequest(response))
+        .catch((err) => console.error(err));
+    }
+    location.reload();
+  }
+
   return (
     <section>
       <h1>Mini-Twitter</h1>
-      {isLoggedIn && (<PostForm
-        postText=""
-        targetId={requestType}
-        // onChange={() => setShowAlert(false)}
-        onSubmit={handleSubmit}
-      />)}
-      {isLoggedIn ? <PostList /> : <Visitor />}
+      {isLoggedIn && (
+        <PostForm
+          postText=""
+          targetId={requestType}
+          // onChange={() => setShowAlert(false)}
+          onSubmit={handleSubmit}
+        />
+      )}
+      {isLoggedIn ? <PostList onDelete={deletePost} /> : <Visitor />}
     </section>
   );
 }

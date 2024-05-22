@@ -1,23 +1,24 @@
 import { ListGroup } from "react-bootstrap";
-import { sendRequest, buildRequest, handleResponse } from "../../app/api";
+import { sendRequest, buildRequest} from "../../app/api";
 import DisplayPost from "./DisplayPost";
 
 // Atom
-import { useAtomValue } from "jotai";
-import { authAtom } from "../../app/atoms";
+import { useAtom, useAtomValue } from "jotai";
+import { authAtom, authorAtom } from "../../app/atoms";
 import { useState } from "react";
 import { useEffect } from "react";
 
-export default function PostList({ userId }) {
+export default function PostList({ onDelete }) {
   const isLoggedIn = useAtomValue(authAtom);
-  const [id, setId] = useState(userId);
-  // const [requestType, setRequestType] = useState()
+   // déterminer l'id de l'author (userme ou userX)
+   const [authorId, setAuthorId] = useAtom(authorAtom); 
+  //  setAuthorId(parseInt(window.location.href.split("/").pop()));
+   const [id, setId] = useState(getAuthorId(authorId, isLoggedIn.userid));
   // requete API
-  const requestType = userId ? "posts_author" : "posts";
-  const [deleteRequest, setDeleteRequest] = useState(undefined);
+  const requestType = authorId ? "posts_author" : "posts";
   const response = sendRequest(requestType, {
-    id: userId,
-    token: isLoggedIn.token,
+    id: id,
+    token: isLoggedIn.token
   });
 
   // afichage Erreurs
@@ -25,38 +26,18 @@ export default function PostList({ userId }) {
     return <p className="text-danger">{response.error.message}</p>;
   }
 
-  // DELETE POST
-  function deletePost(event) {
-    // créer la requête UPDATE DU POST
-    setDeleteRequest(
-      buildRequest("delete_post", {
-        id: event.target.id,
-        token: isLoggedIn.token,
-        body: null,
-      })
-    );
-  }
-
-  // // envoyer la requête UPDATE
-  useEffect(() => {
-    if (deleteRequest) {
-      fetch(deleteRequest.url, deleteRequest.options)
-        .then((response) => response.json())
-        .then((response) =>
-          setDeleteRequest(handleResponse("delete_post", response))
-        )
-        .catch((err) => console.error(err));
-    }
-  }, [deleteRequest]);
-
   // affichage des Posts
   return (
-    <ListGroup className="gap-3">
+    <ListGroup className="gap-3 my-4">
       {response &&
         response.data &&
         response.data.map((post) => (
-          <DisplayPost postData={post} key={post.id} onDelete={deletePost} />
+          <DisplayPost postData={post} key={post.id} onDelete={onDelete} />
         ))}
     </ListGroup>
   );
+}
+
+function getAuthorId(id, loggedId) {
+  return id ? id : loggedId;
 }
